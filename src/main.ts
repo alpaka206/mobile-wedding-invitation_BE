@@ -8,7 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT');
+  const port = configService.get<number>('PORT') || 3000;
   const origin = configService.get<string>('CORS_ORIGIN');
   const isProd = configService.get<string>('NODE_ENV');
 
@@ -19,7 +19,7 @@ async function bootstrap() {
   app.enableCors({
     origin,
     methods: ['GET', 'POST', 'DELETE'],
-    credentials: isProd, // 프로덕션만 허용
+    credentials: isProd,
   });
 
   // DTO 유효성 검사

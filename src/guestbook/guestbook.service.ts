@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Guestbook } from './guestbook.entity';
 import { CreateGuestbookDto } from './dto/create-guestbook.dto';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class GuestbookService {
@@ -14,7 +15,12 @@ export class GuestbookService {
   ) {}
 
   async create(dto: CreateGuestbookDto) {
-    const entry = this.guestbookRepository.create(dto);
+    const hashed = await bcrypt.hash(dto.password, 10);
+    const entry = this.guestbookRepository.create({
+      name: dto.name,
+      message: dto.message,
+      password: hashed,
+    });
     const result = await this.guestbookRepository.save(entry);
     return { message: '방명록이 저장되었습니다.', data: result };
   }
@@ -32,8 +38,10 @@ export class GuestbookService {
     if (!entry) {
       throw new Error('해당 ID의 방명록이 존재하지 않습니다.');
     }
+    const isMatch = await bcrypt.compare(password, entry.password);
+    const isAdmin = password === masterKey;
 
-    if (password === entry.password || password === masterKey) {
+    if (isMatch || isAdmin) {
       await this.guestbookRepository.delete(id);
       return { message: '방명록이 삭제되었습니다.' };
     } else {
