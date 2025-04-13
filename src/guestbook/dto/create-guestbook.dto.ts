@@ -6,4 +6,7 @@ export class CreateGuestbookDto {
 
   @IsString()
   message: string;
+
+  @IsString()
+  password: string;
 }

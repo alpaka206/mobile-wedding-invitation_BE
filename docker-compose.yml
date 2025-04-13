@@ -1,0 +1,16 @@
+# docker-compose.yml
+services:
+  postgres:
+    image: postgres:15
+    container_name: guestbook-db
+    environment:
+      POSTGRES_USER: guestbook
+      POSTGRES_PASSWORD: wedding
+      POSTGRES_DB: guestbook_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
