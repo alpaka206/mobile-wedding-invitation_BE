@@ -17,7 +17,7 @@ async function bootstrap() {
 
   // CORS 설정 (production일 때만 credentials: true 허용)
   app.enableCors({
-    origin,
+    origin: ['http://localhost:5173', origin],
     methods: ['GET', 'POST', 'DELETE'],
     credentials: isProd,
   });
