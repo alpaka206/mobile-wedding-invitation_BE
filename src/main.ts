@@ -9,7 +9,7 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
-  const origin = configService.get<string>('CORS_ORIGIN');
+  // const origin = configService.get<string>('CORS_ORIGIN');
   // const isProd = configService.get<string>('NODE_ENV') === 'production';
 
   // 보안 헤더
@@ -17,7 +17,7 @@ async function bootstrap() {
 
   // CORS 설정 (production일 때만 credentials: true 허용)
   app.enableCors({
-    origin: [origin, 'http://localhost:5173'],
+    origin: ['https://our-wedding-day.com', 'http://localhost:5173'],
     methods: ['GET', 'POST', 'DELETE'],
     credentials: true,
   });
