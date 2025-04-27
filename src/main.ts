@@ -10,16 +10,16 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
   const origin = configService.get<string>('CORS_ORIGIN');
-  const isProd = configService.get<string>('NODE_ENV');
+  // const isProd = configService.get<string>('NODE_ENV') === 'production';
 
   // 보안 헤더
   app.use(helmet());
 
   // CORS 설정 (production일 때만 credentials: true 허용)
   app.enableCors({
-    origin: ['http://localhost:5173', origin],
+    origin: [origin, 'http://localhost:5173'],
     methods: ['GET', 'POST', 'DELETE'],
-    credentials: isProd,
+    credentials: true,
   });
 
   // DTO 유효성 검사
